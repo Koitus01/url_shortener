@@ -13,6 +13,8 @@ RUN wget https://getcomposer.org/download/2.0.9/composer.phar \
 
 COPY docker/apache.conf /etc/apache2/sites-enabled/000-default.conf
 COPY . /var/www
+COPY docker/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
 WORKDIR /var/www
 
