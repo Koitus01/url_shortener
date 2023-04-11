@@ -7,7 +7,7 @@ services:
       context: .
       dockerfile: ./docker/php/Dockerfile
     image: custom_php
-    container_name: app
+    container_name: ${COMPOSE_PROJECT_NAME}_app
     restart: unless-stopped
     tty: true
     environment:
@@ -23,7 +23,7 @@ services:
   #Nginx Service
   webserver:
     image: nginx:alpine
-    container_name: webserver
+    container_name: ${COMPOSE_PROJECT_NAME}_webserver
     restart: unless-stopped
     tty: true
     ports:
@@ -37,15 +37,15 @@ services:
   
   #MySQL Service
   db:
-    image: mysql:5.7.22
-    container_name: db
+    image: mysql
+    container_name: ${COMPOSE_PROJECT_NAME}_db
     restart: unless-stopped
     tty: true
     ports:
       - "3306:3306"
     environment:
-      MYSQL_DATABASE: laravel
-      MYSQL_ROOT_PASSWORD: your_mysql_root_password
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       SERVICE_TAGS: dev
       SERVICE_NAME: mysql
     volumes:
