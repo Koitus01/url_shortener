@@ -1,23 +1,50 @@
-FROM php:7.4-apache
+FROM php:7.4-fpm
 
-RUN a2enmod rewrite
+# Copy composer.lock and composer.json
+COPY composer.lock composer.json /var/www/
 
-RUN apt-get update \
-  && apt-get install -y libzip-dev git wget --no-install-recommends \
-  && apt-get clean
-
-RUN docker-php-ext-install pdo mysqli pdo_mysql zip;
-
-RUN wget https://getcomposer.org/download/2.0.9/composer.phar \
-    && mv composer.phar /usr/bin/composer && chmod +x /usr/bin/composer
-
-COPY docker/apache.conf /etc/apache2/sites-enabled/000-default.conf
-COPY . /var/www
-COPY docker/entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
-
+# Set working directory
 WORKDIR /var/www
 
-CMD ["apache2-foreground"]
+# Install dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    libpng-dev \
+    libjpeg62-turbo-dev \
+    libfreetype6-dev \
+    locales \
+    zip \
+    jpegoptim optipng pngquant gifsicle \
+    vim \
+    unzip \
+    git \
+    curl \
+    libzip-dev
 
-ENTRYPOINT ["/entrypoint.sh"]
+# Clear cache
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Install extensions
+RUN docker-php-ext-install pdo_mysql mbstring zip exif pcntl
+RUN docker-php-ext-configure gd --with-gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ --with-png-dir=/usr/include/
+RUN docker-php-ext-install gd
+
+# Install composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+# Add user for laravel application
+RUN groupadd -g 1000 www
+RUN useradd -u 1000 -ms /bin/bash -g www www
+
+# Copy existing application directory contents
+COPY . /var/www
+
+# Copy existing application directory permissions
+COPY --chown=www:www . /var/www
+
+# Change current user to www
+USER www
+
+# Expose port 9000 and start php-fpm server
+EXPOSE 9000
+CMD ["php-fpm"]
