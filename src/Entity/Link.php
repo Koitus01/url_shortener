@@ -18,6 +18,7 @@ class Link
 	private $id;
 
 	/**
+	 * TODO: try to change on Url value object
 	 * @ORM\Column(type="text")
 	 */
 	private $url;
