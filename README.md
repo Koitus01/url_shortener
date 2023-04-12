@@ -21,7 +21,18 @@
 
     docker compose up -d
 
-Удаление ненужных контейнеров после тестов:
+«Прогон» миграций:
+    
+    chmod 755 ./docker/entrypoint.sh && ./docker/entrypoint.sh
 
-    docker rm --force url_shortener_db url_shortener_webserver url_shortener_app
+Веб интерфейс теперь доступен по адресу: http://localhost:8080
+
+Консольное создание сокращенной ссылки:
+
+    docker exec -it url_shortener_app ./bin/console app:create:link
+
+## Чистка
+Удаление ненужных контейнеров и volum'ов после тестов:
+
+    docker rm --force url_shortener_db url_shortener_webserver url_shortener_app && docker volume rm url_shortener_dbdata 
 
