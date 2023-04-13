@@ -51,6 +51,7 @@ class UrlTest extends TestCase
 	{
 		yield 'empty string' => [''];
 		yield 'only latin letters' => ['aaaaaaaaaaaaabbbbbbbbb'];
+		yield 'with whitespaces' => ['https://aaaa bbbb ccc .com'];
 		yield 'only domain without scheme' => ['domain.com'];
 		yield 'only scheme' => ['https://'];
 		yield 'only punycode domain' => ['фффффф.рф'];
