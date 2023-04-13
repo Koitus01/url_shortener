@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\LinkRepository;
+use App\ValueObject\Url;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -48,9 +49,9 @@ class Link
 		return $this->url;
 	}
 
-	public function setUrl( string $url ): self
+	public function setUrl( Url $url ): self
 	{
-		$this->url = $url;
+		$this->url = $url->value();
 
 		return $this;
 	}
