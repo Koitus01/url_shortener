@@ -20,7 +20,7 @@ class Url
 	 */
 	public static function fromString( string $url ): self
 	{
-		#TODO: urlencode?
+		#TODO: urlencode? Sanitize?
 		$url = strtolower( trim( $url ) );
 		self::validate( idn_to_ascii( $url ) );
 

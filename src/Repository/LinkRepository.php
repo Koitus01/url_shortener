@@ -4,40 +4,55 @@ namespace App\Repository;
 
 use App\Entity\Link;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * @extends ServiceEntityRepository<Link>
  *
- * @method Link|null find($id, $lockMode = null, $lockVersion = null)
- * @method Link|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Link|null find( $id, $lockMode = null, $lockVersion = null )
+ * @method Link|null findOneBy( array $criteria, array $orderBy = null )
  * @method Link[]    findAll()
- * @method Link[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Link[]    findBy( array $criteria, array $orderBy = null, $limit = null, $offset = null )
  */
 class LinkRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, Link::class);
-    }
+	public function __construct( ManagerRegistry $registry )
+	{
+		parent::__construct( $registry, Link::class );
+	}
 
-    public function add(Link $entity, bool $flush = false): void
-    {
-        $this->getEntityManager()->persist($entity);
+	/**
+	 * @throws EntityNotFoundException
+	 */
+	public function findAliveOneByHash( string $hash ): Link
+	{
 
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
-    }
 
-    public function remove(Link $entity, bool $flush = false): void
-    {
-        $this->getEntityManager()->remove($entity);
+		if ( !$model = $this->findOneBy( ['hash' => $hash] ) ) {
+			throw new EntityNotFoundException();
+		}
+		return $model;
+	}
 
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
-    }
+	public function add( Link $entity, bool $flush = false ): void
+	{
+		$this->getEntityManager()->persist( $entity );
+
+		if ( $flush ) {
+			$this->getEntityManager()->flush();
+		}
+	}
+
+	public function remove( Link $entity, bool $flush = false ): void
+	{
+		$this->getEntityManager()->remove( $entity );
+
+		if ( $flush ) {
+			$this->getEntityManager()->flush();
+		}
+	}
 
 //    /**
 //     * @return Link[] Returns an array of Link objects
