@@ -20,6 +20,7 @@ class Url
 	 */
 	public static function fromString( string $url ): self
 	{
+		#TODO: urlencode?
 		$url = strtolower( trim( $url ) );
 		self::validate( idn_to_ascii( $url ) );
 
@@ -59,6 +60,11 @@ class Url
 	}
 
 	public function value(): string
+	{
+		return $this->url;
+	}
+
+	public function __toString()
 	{
 		return $this->url;
 	}
