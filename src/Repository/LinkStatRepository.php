@@ -7,6 +7,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
+ * TODO: delete it?
  * @extends ServiceEntityRepository<LinkStat>
  *
  * @method LinkStat|null find($id, $lockMode = null, $lockVersion = null)

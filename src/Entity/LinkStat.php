@@ -28,6 +28,11 @@ class LinkStat
 	 */
 	private $visit_count;
 
+	public function __construct()
+	{
+		$this->visit_count = 0;
+	}
+
 	public function getId(): ?int
 	{
 		return $this->id;

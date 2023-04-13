@@ -47,7 +47,7 @@ class UrlHash implements UrlHashInterface
 		$this->skipped_char++;
 		$this->hash = substr( $this->fullHash, $this->skipped_char, self::MAX_LENGTH );
 		if ( !$this->hash ) {
-			// крайне маловероятный случай, но лучше знать о нем
+			// unlikely case, better to know about it
 			throw new UrlHashGenerateException( 'Cannot generate unique hash for an url' );
 		}
 
