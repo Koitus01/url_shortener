@@ -2,6 +2,7 @@
 
 namespace App\Tests\Integration\UseCase;
 
+use App\Entity\Link;
 use App\Service\UrlHash;
 use App\UseCase\CreateLink;
 use App\ValueObject\Url;
@@ -33,6 +34,9 @@ class CreateLinkTest extends KernelTestCase
 	{
 		$uv = Url::fromString('https://aaaaa.com');
 		$cl = new CreateLink($this->entityManager, new UrlHash());
-		$cl->execute($uv);
+		$result = $cl->execute($uv);
+
+		$this->assertEquals('e0a7a0', $result->getHash());
+		$this->assertEquals('https://aaaaa.com', $result->getUrl());
 	}
 }

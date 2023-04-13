@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\LinkRepository;
 use App\ValueObject\Url;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -38,6 +39,11 @@ class Link
 	 * @ORM\OneToOne(targetEntity=LinkStat::class, mappedBy="link", cascade={"persist", "remove"})
 	 */
 	private $stat;
+
+	public function __construct()
+	{
+		$this->created_at = new DateTimeImmutable('now');
+	}
 
 	public function getId(): ?int
 	{
