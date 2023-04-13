@@ -3,7 +3,6 @@
 namespace App\UseCase;
 
 use App\Entity\Link;
-use App\Service\UrlHashInterface;
 use App\ValueObject\Url;
 use Doctrine\Persistence\ObjectManager;
 
