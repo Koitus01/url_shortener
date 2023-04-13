@@ -18,7 +18,7 @@ class Link
 	private $id;
 
 	/**
-	 * TODO: try to change on Url value object
+	 * TODO: change to UrlType?
 	 * @ORM\Column(type="text")
 	 */
 	private $url;

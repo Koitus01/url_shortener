@@ -6,9 +6,6 @@ use App\Exception\InvalidUrlException;
 
 class Url
 {
-	/**
-	 * @see https://stackoverflow.com/questions/417142/what-is-the-maximum-length-of-a-url-in-different-browsers
-	 */
 	private const MAX_LENGTH = 2000;
 
 	private string $url;
@@ -18,32 +15,32 @@ class Url
 		$this->url = $url;
 	}
 
+	/**
+	 * @throws InvalidUrlException
+	 */
 	public static function fromString( string $url ): self
 	{
-		// Обработка доменов в Punycode
-		$url = trim( $url );
-		self::validate( $url );
+		$url = strtolower( trim( $url ) );
+		self::validate( idn_to_ascii( $url ) );
+
+		return new self( $url );
 	}
 
 	/**
 	 * @throws InvalidUrlException
 	 */
-	private static function validate( string $url ): bool
+	private static function validate( string $url ): void
 	{
-		if ( empty( $url ) ) {
-			throw new InvalidUrlException( 'Url is empty' );
-		}
-
 		/*
 		 * https://stackoverflow.com/questions/417142/what-is-the-maximum-length-of-a-url-in-different-browsers
-		 * Нужно ли???
+		 * Another same services has no such restriction
 		if (strlen($url) > self::MAX_LENGTH) {
 			throw new InvalidUrlException('Url is too long');
 		}
 		* */
 
-		// https://regex101.com/r/ArkAD3/1
-		$urlRegex = '^\D+:\/\/(\w|-)+\.\w+$';
+		// https://regex101.com/r/ArkAD3/2
+		$urlRegex = '/^\D+:\/\/(\w|-)+\.(\w|-)+/';
 		if ( !preg_match( $urlRegex, $url ) ) {
 			throw new InvalidUrlException( 'It is not an url' );
 		}
@@ -51,9 +48,14 @@ class Url
 
 	}
 
-	public function getIdnDecoded()
+	public function idnDecoded()
 	{
 		return idn_to_utf8( $this->url );
+	}
+
+	public function idnEncoded()
+	{
+		return idn_to_ascii( $this->url );
 	}
 
 	public function value(): string

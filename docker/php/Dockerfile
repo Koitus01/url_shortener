@@ -20,23 +20,31 @@ RUN apt-get update && apt-get install -y \
     git \
     curl \
     libzip-dev \
-    libonig-dev
+    libonig-dev \
+    zlib1g-dev \
+    g++ \
+    libicu-dev
+
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# PHP extensions
+# pdo_mysql
 RUN docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd \
     && docker-php-ext-install pdo_mysql
 # Install extensions
 RUN docker-php-ext-install pdo_mysql zip exif pcntl
+
+# Install intl
+RUN docker-php-ext-configure intl \
+&& docker-php-ext-install intl
 # Install xdebug
 RUN pecl install xdebug-3.1.5 \
     && docker-php-ext-enable xdebug
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Add user for laravel application
+# Add www user
 RUN groupadd -g 1000 www
 RUN useradd -u 1000 -ms /bin/bash -g www www
 
