@@ -9,21 +9,22 @@ use App\Repository\LinkRepository;
 use App\Service\Interfaces\UrlHashInterface;
 use App\Service\UrlHash;
 use App\ValueObject\Url;
+use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 
 class CreateLink
 {
 
-	private ObjectManager $manager;
+	private ManagerRegistry $doctrine;
 	private UrlHashInterface $urlHash;
 
 	/**
-	 * @param ObjectManager $manager
+	 * @param ManagerRegistry $doctrine
 	 * @param UrlHashInterface|UrlHash $urlHash
 	 */
-	public function __construct( ObjectManager $manager, UrlHashInterface $urlHash )
+	public function __construct( ManagerRegistry $doctrine, UrlHashInterface $urlHash )
 	{
-		$this->manager = $manager;
+		$this->doctrine = $doctrine;
 		$this->urlHash = $urlHash;
 	}
 
@@ -36,7 +37,7 @@ class CreateLink
 	public function execute( Url $url ): Link
 	{
 		/** @var LinkRepository $repository */
-		$repository = $this->manager->getRepository( Link::class );
+		$repository = $this->doctrine->getRepository( Link::class );
 		$hash = $this->urlHash->generate( $url )->value();
 		// Same url must have same hash
 		if ( $model = $repository->findOneBy( [
@@ -44,7 +45,7 @@ class CreateLink
 			'url' => $url->value()
 		] ) ) {
 			// Restore model, if it's expired
-			if ( $model->getDeletedAt() ) $repository->restore($model, true);
+			if ( $model->getDeletedAt() ) $repository->restore( $model, true );
 			return $model;
 		}
 
@@ -60,8 +61,8 @@ class CreateLink
 		$linkStat->setVisitCount( 0 );
 		$link->setStat( $linkStat );
 
-		$this->manager->persist( $link );
-		$this->manager->flush();
+		$this->doctrine->getManager()->persist( $link );
+		$this->doctrine->getManager()->flush();
 
 		return $link;
 	}
