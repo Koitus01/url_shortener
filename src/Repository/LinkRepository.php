@@ -6,7 +6,6 @@ use App\Entity\Link;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * @extends ServiceEntityRepository<Link>
@@ -26,10 +25,8 @@ class LinkRepository extends ServiceEntityRepository
 	/**
 	 * @throws EntityNotFoundException
 	 */
-	public function findAliveOneByHash( string $hash ): Link
+	public function findOneByHash( string $hash ): Link
 	{
-
-
 		if ( !$model = $this->findOneBy( ['hash' => $hash] ) ) {
 			throw new EntityNotFoundException();
 		}

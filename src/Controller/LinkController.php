@@ -44,16 +44,24 @@ class LinkController extends AbstractController
 	 * @return RedirectResponse
 	 * @Route("/{hash}", name="app_redirect")
 	 */
-	public function locate( string $hash, ManagerRegistry $manager ): RedirectResponse
+	public function locate( string $hash, ManagerRegistry $manager )
 	{
 		/** @var LinkRepository $repository */
 		$repository = $manager->getRepository( Link::class );
 		try {
-			return $this->redirect( $repository->findOneBy([
-				'hash' => $hash,
-			]) );
+			$model = $repository->find( 4 );
+			$repository->remove($model);
+			$repository->find( 4 )->getUrl();
+			$repository->findOneByHash( $hash )->getUrl();
+			$repository->findOneBy( ['hash' => $hash] )->getUrl();
+			$manager->getManager()->flush();
+
+			return $this->render( 'base.html.twig', [
+				'number' => 'PIPI',
+			] );
+			return $this->redirect( $repository->findOneByHash( $hash )->getUrl() );
 		} catch ( EntityNotFoundException $e ) {
-			throw $this->createNotFoundException('Link is not found or expired');
+			throw $this->createNotFoundException( 'Link is not found or expired' );
 		}
 	}
 }
