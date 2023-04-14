@@ -6,8 +6,6 @@ use App\Entity\Link;
 use App\Entity\LinkStat;
 use App\ValueObject\Url;
 use DateTime;
-use Doctrine\ORM\EntityManager;
-use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -32,7 +30,7 @@ class LinkControllerTest extends WebTestCase
 		$this->assertResponseRedirects('http://aaaaaaa.mo');
 	}
 
-	public function testLocateExpiredHash(): void
+	public function testLocateExpiredHashThrow(): void
 	{
 		$client = static::createClient();
 		$kernel = self::bootKernel();
@@ -52,7 +50,7 @@ class LinkControllerTest extends WebTestCase
 		$client->request('GET', '/bibibi');
 	}
 
-    public function testLocateNonExistentHash(): void
+    public function testLocateNonExistentHashThrow(): void
     {
 		$client = static::createClient();
 		$this->expectException(NotFoundHttpException::class);

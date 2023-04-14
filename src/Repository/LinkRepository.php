@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Link;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\Persistence\ManagerRegistry;
@@ -25,9 +26,12 @@ class LinkRepository extends ServiceEntityRepository
 	/**
 	 * @throws EntityNotFoundException
 	 */
-	public function findOneByHash( string $hash ): Link
+	public function findAliveOneByHash( string $hash ): Link
 	{
-		if ( !$model = $this->findOneBy( ['hash' => $hash] ) ) {
+		if ( !$model = $this->findOneBy( [
+			'hash' => $hash,
+			'deleted_at' => null
+		] ) ) {
 			throw new EntityNotFoundException();
 		}
 		return $model;
@@ -44,7 +48,18 @@ class LinkRepository extends ServiceEntityRepository
 
 	public function remove( Link $entity, bool $flush = false ): void
 	{
-		$this->getEntityManager()->remove( $entity );
+		$entity->setDeletedAt( new DateTime() );
+		$this->getEntityManager()->persist( $entity );
+
+		if ( $flush ) {
+			$this->getEntityManager()->flush();
+		}
+	}
+
+	public function restore( Link $entity, bool $flush = false ): void
+	{
+		$entity->setDeletedAt( null );
+		$this->getEntityManager()->persist( $entity );
 
 		if ( $flush ) {
 			$this->getEntityManager()->flush();

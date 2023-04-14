@@ -40,9 +40,14 @@ class Link
 	 */
 	private $stat;
 
+	/**
+	 * @ORM\Column(type="datetime", nullable=true)
+	 */
+	private $deleted_at;
+
 	public function __construct()
 	{
-		$this->created_at = new DateTimeImmutable('now');
+		$this->created_at = new DateTimeImmutable( 'now' );
 	}
 
 	public function getId(): ?int
@@ -99,6 +104,18 @@ class Link
 		}
 
 		$this->stat = $stat;
+
+		return $this;
+	}
+
+	public function getDeletedAt(): ?\DateTimeInterface
+	{
+		return $this->deleted_at;
+	}
+
+	public function setDeletedAt( ?\DateTimeInterface $deleted_at ): self
+	{
+		$this->deleted_at = $deleted_at;
 
 		return $this;
 	}
