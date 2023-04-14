@@ -18,11 +18,13 @@ class Url
 	/**
 	 * @throws InvalidUrlException
 	 */
-	public static function fromString( string $url ): self
+	public static function fromString( string $url, $validate = true ): self
 	{
 		#TODO: urlencode? Sanitize?
-		$url = strtolower( trim( $url ) );
-		self::validate( idn_to_ascii( $url ) );
+		$url = strtolower( trim( filter_var( $url, FILTER_SANITIZE_URL ) ) );
+		if ( $validate ) {
+			self::validate( idn_to_ascii( urldecode( $url ) ) );
+		}
 
 		return new self( $url );
 	}
@@ -62,6 +64,11 @@ class Url
 	public function value(): string
 	{
 		return $this->url;
+	}
+
+	public function viewValue(): string
+	{
+		return htmlspecialchars( urldecode( $this->url ) );
 	}
 
 	public function __toString()

@@ -10,7 +10,6 @@ use App\Service\Interfaces\UrlHashInterface;
 use App\Service\UrlHash;
 use App\ValueObject\Url;
 use Doctrine\Persistence\ManagerRegistry;
-use Doctrine\Persistence\ObjectManager;
 
 class CreateLink
 {

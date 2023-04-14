@@ -55,9 +55,9 @@ class Link
 		return $this->id;
 	}
 
-	public function getUrl(): ?string
+	public function getUrl(): Url
 	{
-		return $this->url;
+		return Url::fromString($this->url, false);
 	}
 
 	public function setUrl( Url $url ): self
@@ -67,7 +67,7 @@ class Link
 		return $this;
 	}
 
-	public function getHash(): ?string
+	public function getHash(): string
 	{
 		return $this->hash;
 	}

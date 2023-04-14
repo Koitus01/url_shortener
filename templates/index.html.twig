@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <form class="url_form" action="{{ path('app_link_create') }}" method="POST">
+        {% if error %}
+            <a class="url_form__link" href="{{ path('app_link_index') }}">Create other</a>
+        {% endif %}
+        <h2>URL shortener</h2>
+        <input required name="url" class="url_form__input" type="text" placeholder="URL">
+        <button class="url_form__button">Short</button>
+    </form>
+
+    <style>
+        html, body {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #eff2f7;
+        }
+
+        .url_form {
+            align-items: center;
+            display: flex;
+            height: 328px;
+            justify-content: center;
+            flex-direction: column;
+            padding: 30px;
+            max-width: 328px;
+            margin: auto;
+            border-radius: 24px;
+        }
+
+        .url_form__input {
+            margin-bottom: 15px;
+            border: 0 solid transparent;
+            box-sizing: border-box;
+            color: #2f3747;
+            font-size: 16px;
+            outline: 0;
+            padding: 10px;
+            position: relative;
+            vertical-align: top;
+            width: 100%;
+            z-index: 2;
+        }
+
+        .url_form__link {
+            background-color: #5ed994;
+            color: black;
+            padding: 1em 1.5em;
+            text-decoration: none;
+            text-transform: uppercase;
+        }
+
+        .url_form__button {
+            width: 120px;
+            height: 56px;
+            color: black;
+            background-color: coral;
+            cursor: pointer;
+            border: 1px;
+            border-radius: 25px;
+        }
+
+        .url_form__button:hover {
+            opacity: 0.7;
+        }
+    </style
+{% endblock %}

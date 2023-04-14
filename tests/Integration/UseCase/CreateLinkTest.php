@@ -33,7 +33,7 @@ class CreateLinkTest extends KernelTestCase
 		$result = $cl->execute( $uv );
 
 		$this->assertEquals( $this->hash(), $result->getHash() );
-		$this->assertEquals( $this->url(), $result->getUrl() );
+		$this->assertEquals( $this->url(), $result->getUrl()->value() );
 		$this->assertEquals( 0, $result->getStat()->getVisitCount() );
 	}
 
@@ -47,7 +47,7 @@ class CreateLinkTest extends KernelTestCase
 		$newModel = $cl->execute( $uv );
 
 		$this->assertEquals( $existingModel->getHash(), $newModel->getHash() );
-		$this->assertEquals( $existingModel->getUrl(), $newModel->getUrl() );
+		$this->assertEquals( $existingModel->getUrl()->value(), $newModel->getUrl()->value() );
 		$this->assertEquals( $existingModel->getId(), $newModel->getId() );
 		$this->assertNull( $newModel->getDeletedAt() );
 	}
