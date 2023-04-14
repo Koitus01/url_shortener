@@ -49,6 +49,7 @@ class CreateLinkTest extends KernelTestCase
 		$this->assertEquals($existingModel->getHash(), $newModel->getHash());
 		$this->assertEquals($existingModel->getUrl(), $newModel->getUrl());
 		$this->assertEquals($existingModel->getId(), $newModel->getId());
+		$this->assertNull($newModel->getDeletedAt());
 	}
 
 	public function testCreateWithDuplicatedHash()

@@ -5,6 +5,7 @@ namespace App\UseCase;
 use App\Entity\Link;
 use App\Entity\LinkStat;
 use App\Exception\UrlHashGenerateException;
+use App\Repository\LinkRepository;
 use App\Service\Interfaces\UrlHashInterface;
 use App\Service\UrlHash;
 use App\ValueObject\Url;
@@ -34,6 +35,7 @@ class CreateLink
 	 */
 	public function execute( Url $url ): Link
 	{
+		/** @var LinkRepository $repository */
 		$repository = $this->manager->getRepository( Link::class );
 		$hash = $this->urlHash->generate( $url )->value();
 		// Same url must have same hash
@@ -41,10 +43,12 @@ class CreateLink
 			'hash' => $hash,
 			'url' => $url->value()
 		] ) ) {
+			// Restore model, if it's expired
+			if ( $model->getDeletedAt() ) $repository->restore($model, true);
 			return $model;
 		}
 
-		// but extremely rare collisions are possible, so generating new hash, if it already exists
+		// Extremely rare collisions are possible, so generating new hash, if it already exists
 		while ( $repository->findOneBy( ['hash' => $hash] ) ) {
 			$hash = $this->urlHash->next()->value();
 		}
