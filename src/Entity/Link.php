@@ -6,15 +6,12 @@ use App\Repository\LinkRepository;
 use App\ValueObject\Url;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 
 /**
  * @ORM\Entity(repositoryClass=LinkRepository::class)
  */
 class Link
 {
-	use SoftDeleteableEntity;
-
 	/**
 	 * @ORM\Id
 	 * @ORM\GeneratedValue
