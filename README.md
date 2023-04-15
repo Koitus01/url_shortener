@@ -1,5 +1,10 @@
 # url_shortener
 
+TODO: 
+1. крон для обновления updated_at
+2. аппликейшен тесты на роуты?
+3. 
+
 ## Requirements
 1. [Docker](https://docs.docker.com/get-docker/)
 2. [Docker compose](https://docs.docker.com/compose/install/)

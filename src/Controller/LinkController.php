@@ -46,9 +46,10 @@ class LinkController extends AbstractController
 			$url = Url::fromString( $inputUrl );
 			$link = $createLink->execute( $url );
 			// TODO: move url concatenation in a service, if needed somewhere else: CLI or Queue
-			// TODO: get the scheme from config???
+			// Get the scheme from config???
 			return $this->render( 'result.html.twig', [
-				'url' => 'http://' . $this->getParameter( 'app.host' ) . '/' . $link->getHash()
+				'app_url' => $this->getParameter( 'app.url' ),
+				'hash' => $link->getHash()
 			] );
 		} catch ( InvalidUrlException $e ) {
 			return $this->redirect( $this->generateUrl( 'app_link_index', [
@@ -56,19 +57,29 @@ class LinkController extends AbstractController
 				'url' => $request->get( 'url', $inputUrl )
 			] ) );
 		} catch ( UrlHashGenerateException $e ) {
+			// Put log in global handler???
 			$exceptionLogger->log( $e );
 			return $this->render( 'error.html.twig' );
 		}
 	}
 
 	/**
-	 * @Route("/link/statistic", name="app_link_statistic")
+	 * @Route("/link/statistic/{page}", defaults={"page"=1}, name="app_link_statistic")
 	 */
-	public function statistic(): JsonResponse
+	public function statistic( ManagerRegistry $doctrine, int $page ): Response
 	{
-		return $this->json( [
-			'message' => 'Welcome to your new controller!',
-			'path' => 'src/Controller/LinkController.php',
+		$limit = 10;
+		$links = $doctrine->getRepository( Link::class )->findBy(
+			[],
+			[],
+			$limit,
+			$page * $limit - 10
+		);
+
+		return $this->render( 'statistic.html.twig', [
+			'links' => $links,
+			'page' => $page,
+			'app_url' => $this->getParameter( 'app.url' )
 		] );
 	}
 

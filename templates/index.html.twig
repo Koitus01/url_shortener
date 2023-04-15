@@ -1,11 +1,13 @@
 {% extends 'base.html.twig' %}
 {% block body %}
     <form class="base url_form" action="{{ path('app_link_create') }}" method="POST">
+        <a class="base__link" href="{{ path('app_link_statistic') }}">Show statistic</a>
         {% if error %}
             <span class="url_form__error">URL is incorrect. Check for protocol</span>
         {% endif %}
         <h2>URL shortener</h2>
-        <input required name="url" class="url_form__input" value="{{ url ?? '' }}" type="text" placeholder="https://aaaaaaaaa.com?name=cccc">
+        <input required name="url" class="url_form__input" value="{{ url ?? '' }}" type="text"
+               placeholder="https://aaaaaaaaa.com?name=cccc">
         <button class="url_form__button">Short</button>
     </form>
 
