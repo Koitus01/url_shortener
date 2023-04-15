@@ -4,8 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Link;
 use App\Exception\InvalidUrlException;
-use App\Form\DatalistType;
+use App\Exception\UrlHashGenerateException;
 use App\Repository\LinkRepository;
+use App\Service\Interfaces\ExceptionLoggerInterface;
 use App\UseCase\CreateLink;
 use App\ValueObject\Url;
 use Doctrine\ORM\EntityNotFoundException;
@@ -22,26 +23,37 @@ class LinkController extends AbstractController
 	/**
 	 * @Route("/", name="app_link_index")
 	 */
-	public function index(Request $request): Response
+	public function index( Request $request ): Response
 	{
-		return $this->render( 'index.html.twig' , [
-			'error' => $request->get('error', ''),
-			'url' => $request->get('url', '')
-		]);
+		return $this->render( 'index.html.twig', [
+			'error' => $request->get( 'error', '' ),
+			'url' => $request->get( 'url', '' )
+		] );
 	}
 
 	/**
 	 * @Route("/link/create", name="app_link_create", methods={"POST", "PUT"})
-	 * @throws InvalidUrlException
 	 */
-	public function create(Request $request, CreateLink $createLink): Response
+	public function create( Request $request, CreateLink $createLink , ExceptionLoggerInterface $exceptionLogger): Response
 	{
-		$url = Url::fromString($request->get('url'));
+		$inputUrl = $request->get( 'url' );
+		try {
+			$url = Url::fromString( $inputUrl );
+			$createLink->execute( $url );
+		} catch ( InvalidUrlException $e ) {
+			$this->redirect($this->generateUrl('app_link_index', [
+				'error' => $request->get( 'error', $e->getMessage() ),
+				'url' => $request->get( 'url', $inputUrl )
+			]));
+		} catch ( UrlHashGenerateException $e ) {
+			$this->render('error.html.twig');
+		}
 
-		return $this->render( 'index.html.twig' , [
-			'error' => $request->get('error', ''),
-			'url' => $request->get('url', '')
-		]);
+
+		return $this->render( 'index.html.twig', [
+			'error' => $request->get( 'error', '' ),
+			'url' => $request->get( 'url', '' )
+		] );
 	}
 
 	/**
