@@ -37,10 +37,9 @@ class CreateLink
 	{
 		/** @var LinkRepository $repository */
 		$repository = $this->doctrine->getRepository( Link::class );
-		$hash = $this->urlHash->generate( $url )->value();
 		// Same url must have same hash
 		if ( $model = $repository->findOneBy( [
-			'hash' => $hash,
+			'host' => $url->host(),
 			'url' => $url->value()
 		] ) ) {
 			// Restore model, if it's expired
@@ -48,6 +47,7 @@ class CreateLink
 			return $model;
 		}
 
+		$hash = $this->urlHash->generate( $url )->value();
 		// Extremely rare collisions are possible, so generating new hash, if it already exists
 		while ( $repository->findOneBy( ['hash' => $hash] ) ) {
 			$hash = $this->urlHash->next()->value();
@@ -58,7 +58,6 @@ class CreateLink
 		$link->setUrl( $url );
 		$link->setHost( $url );
 		$linkStat = new LinkStat();
-		$linkStat->setVisitCount( 0 );
 		$link->setStat( $linkStat );
 
 		$this->doctrine->getManager()->persist( $link );

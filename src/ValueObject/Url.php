@@ -22,7 +22,6 @@ class Url
 	 */
 	public static function fromString( string $url, $validate = true ): self
 	{
-		#TODO: urlencode? Sanitize?
 		$formattedUrl = strtolower( trim( $url ) );
 		if ( $validate ) {
 			self::validate( idn_to_ascii( urldecode( $formattedUrl ) ) );

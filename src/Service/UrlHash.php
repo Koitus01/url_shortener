@@ -19,6 +19,7 @@ class UrlHash implements UrlHashInterface
 	}
 
 	/**
+	 * TODO: probably pass Url value object here is not the best idea, because generate hash might not be needed it
 	 * @param Url $url
 	 * @return UrlHash
 	 * @throws UrlHashGenerateException

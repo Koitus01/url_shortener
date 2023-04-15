@@ -37,7 +37,7 @@ class CreateLinkTest extends KernelTestCase
 		$this->assertEquals( 0, $result->getStat()->getVisitCount() );
 	}
 
-	public function testReturnExistingModelForSameDomain()
+	public function testReturnExistingModelForSameUrl()
 	{
 		$uv = Url::fromString( $this->url() );
 		$cl = new CreateLink( $this->doctrine, new UrlHash() );
