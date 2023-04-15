@@ -8,6 +8,7 @@ use App\Exception\UrlHashGenerateException;
 use App\Repository\LinkRepository;
 use App\Service\Interfaces\ExceptionLoggerInterface;
 use App\UseCase\CreateLink;
+use App\UseCase\UpdateStatistic;
 use App\ValueObject\Url;
 use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\Persistence\ManagerRegistry;
@@ -71,16 +72,19 @@ class LinkController extends AbstractController
 	 * «redirect» is better naming, but it's already taken
 	 * No separate service, because there isn't much of logic
 	 * @param string $hash
-	 * @param ManagerRegistry $manager
+	 * @param ManagerRegistry $doctrine
+	 * @param UpdateStatistic $updateStatistic
 	 * @return RedirectResponse
 	 * @Route("/{hash}", name="app_link_redirect")
 	 */
-	public function locate( string $hash, ManagerRegistry $manager ): RedirectResponse
+	public function locate( string $hash, ManagerRegistry $doctrine, UpdateStatistic $updateStatistic): RedirectResponse
 	{
 		/** @var LinkRepository $repository */
-		$repository = $manager->getRepository( Link::class );
+		$repository = $doctrine->getRepository( Link::class );
 		try {
-			return $this->redirect( $repository->findAliveOneByHash( $hash )->getUrl()->value() );
+			$linkEntity = $repository->findAliveOneByHash( $hash );
+			$updateStatistic->execute($linkEntity);
+			return $this->redirect( $linkEntity->getUrl()->value() );
 		} catch ( EntityNotFoundException $e ) {
 			throw $this->createNotFoundException( 'Link is not found or expired' );
 		}

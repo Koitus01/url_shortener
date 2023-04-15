@@ -5,27 +5,12 @@ namespace App\Tests\Integration\UseCase;
 use App\Entity\Link;
 use App\Entity\LinkStat;
 use App\Service\UrlHash;
+use App\Tests\Integration\BaseIntegrationTest;
 use App\UseCase\CreateLink;
 use App\ValueObject\Url;
-use Doctrine\ORM\EntityManager;
-use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class CreateLinkTest extends KernelTestCase
+class CreateLinkTest extends BaseIntegrationTest
 {
-	/**
-	 * @var ManagerRegistry
-	 */
-	private $doctrine;
-
-	protected function setUp(): void
-	{
-		$kernel = self::bootKernel();
-
-		$this->doctrine = $kernel->getContainer()
-			->get( 'doctrine' );
-	}
-
 	public function testExecute()
 	{
 		$uv = Url::fromString( $this->url() );
@@ -69,16 +54,5 @@ class CreateLinkTest extends KernelTestCase
 
 		// Full md5 hash for https://aaaaa.com is e0a7a048e544adfac1a47618aa95f1ce, 0a7a04 — next part after first char
 		$this->assertEquals( '0a7a04', $result->getHash() );
-	}
-
-
-	private static function hash(): string
-	{
-		return 'e0a7a0';
-	}
-
-	private static function url(): string
-	{
-		return 'https://aaaaa.com';
 	}
 }
