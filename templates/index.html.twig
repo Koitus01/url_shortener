@@ -1,25 +1,19 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-    <form class="url_form" action="{{ path('app_link_create') }}" method="POST">
+    <form class="base url_form" action="{{ path('app_link_create') }}" method="POST">
         {% if error %}
             <a class="url_form__link" href="{{ path('app_link_index') }}">Create other</a>
         {% endif %}
         <h2>URL shortener</h2>
-        <input required name="url" class="url_form__input" type="text" placeholder="URL">
+        <input required name="url" class="url_form__input" value="{{ url ?? '' }}" type="text" placeholder="URL">
         <button class="url_form__button">Short</button>
     </form>
 
     <style>
-        html, body {
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #eff2f7;
-        }
+
 
         .url_form {
-            align-items: center;
+            /*align-items: center;
             display: flex;
             height: 328px;
             justify-content: center;
@@ -27,7 +21,7 @@
             padding: 30px;
             max-width: 328px;
             margin: auto;
-            border-radius: 24px;
+            border-radius: 24px;*/
         }
 
         .url_form__input {

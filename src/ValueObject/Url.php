@@ -21,12 +21,12 @@ class Url
 	public static function fromString( string $url, $validate = true ): self
 	{
 		#TODO: urlencode? Sanitize?
-		$url = strtolower( trim( filter_var( $url, FILTER_SANITIZE_URL ) ) );
+		$formattedUrl = strtolower( trim( $url ) );
 		if ( $validate ) {
-			self::validate( idn_to_ascii( urldecode( $url ) ) );
+			self::validate( idn_to_ascii( urldecode( $formattedUrl ) ) );
 		}
 
-		return new self( $url );
+		return new self( $formattedUrl );
 	}
 
 	/**
@@ -66,6 +66,10 @@ class Url
 		return $this->url;
 	}
 
+	/**
+	 * Prepared for showing in html
+	 * @return string
+	 */
 	public function viewValue(): string
 	{
 		return htmlspecialchars( urldecode( $this->url ) );

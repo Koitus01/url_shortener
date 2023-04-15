@@ -12,6 +12,27 @@
         {% block javascripts %}
             {{ encore_entry_script_tags('app') }}
         {% endblock %}
+        <style>
+            html, body {
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background-color: #eff2f7;
+            }
+
+            .base {
+                align-items: center;
+                display: flex;
+                height: 328px;
+                justify-content: center;
+                flex-direction: column;
+                padding: 30px;
+                max-width: 328px;
+                margin: auto;
+                border-radius: 24px;
+            }
+        </style>
     </head>
     <body>
         {% block body %}{% endblock %}
