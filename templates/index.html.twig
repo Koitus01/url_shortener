@@ -2,27 +2,14 @@
 {% block body %}
     <form class="base url_form" action="{{ path('app_link_create') }}" method="POST">
         {% if error %}
-            <a class="url_form__link" href="{{ path('app_link_index') }}">Create other</a>
+            <span class="url_form__error">URL is incorrect. Check for protocol</span>
         {% endif %}
         <h2>URL shortener</h2>
-        <input required name="url" class="url_form__input" value="{{ url ?? '' }}" type="text" placeholder="URL">
+        <input required name="url" class="url_form__input" value="{{ url ?? '' }}" type="text" placeholder="https://aaaaaaaaa.com?name=cccc">
         <button class="url_form__button">Short</button>
     </form>
 
     <style>
-
-
-        .url_form {
-            /*align-items: center;
-            display: flex;
-            height: 328px;
-            justify-content: center;
-            flex-direction: column;
-            padding: 30px;
-            max-width: 328px;
-            margin: auto;
-            border-radius: 24px;*/
-        }
 
         .url_form__input {
             margin-bottom: 15px;
@@ -38,9 +25,8 @@
             z-index: 2;
         }
 
-        .url_form__link {
-            background-color: #5ed994;
-            color: black;
+        .url_form__error {
+            color: #fa0202;
             padding: 1em 1.5em;
             text-decoration: none;
             text-transform: uppercase;

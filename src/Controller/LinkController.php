@@ -35,26 +35,30 @@ class LinkController extends AbstractController
 	/**
 	 * @Route("/link/create", name="app_link_create", methods={"POST", "PUT"})
 	 */
-	public function create( Request $request, CreateLink $createLink , ExceptionLoggerInterface $exceptionLogger): Response
+	public function create(
+		Request                  $request,
+		CreateLink               $createLink,
+		ExceptionLoggerInterface $exceptionLogger
+	): Response
 	{
 		$inputUrl = $request->get( 'url' );
 		try {
 			$url = Url::fromString( $inputUrl );
-			$createLink->execute( $url );
+			$link = $createLink->execute( $url );
+			// TODO: move url concatenation in a service, if needed somewhere else: CLI or Queue
+			// TODO: get the scheme from config???
+			return $this->render( 'result.html.twig', [
+				'url' => 'http://' . $this->getParameter('app.host') . '/' . $link->getHash()
+			] );
 		} catch ( InvalidUrlException $e ) {
-			$this->redirect($this->generateUrl('app_link_index', [
+			return $this->redirect( $this->generateUrl( 'app_link_index', [
 				'error' => $request->get( 'error', $e->getMessage() ),
 				'url' => $request->get( 'url', $inputUrl )
-			]));
+			] ) );
 		} catch ( UrlHashGenerateException $e ) {
-			$this->render('error.html.twig');
+			$this->render( 'error.html.twig' );
+			$exceptionLogger->log( $e );
 		}
-
-
-		return $this->render( 'index.html.twig', [
-			'error' => $request->get( 'error', '' ),
-			'url' => $request->get( 'url', '' )
-		] );
 	}
 
 	/**
@@ -77,13 +81,13 @@ class LinkController extends AbstractController
 	 * @return RedirectResponse
 	 * @Route("/{hash}", name="app_link_redirect")
 	 */
-	public function locate( string $hash, ManagerRegistry $doctrine, UpdateStatistic $updateStatistic): RedirectResponse
+	public function locate( string $hash, ManagerRegistry $doctrine, UpdateStatistic $updateStatistic ): RedirectResponse
 	{
 		/** @var LinkRepository $repository */
 		$repository = $doctrine->getRepository( Link::class );
 		try {
 			$linkEntity = $repository->findAliveOneByHash( $hash );
-			$updateStatistic->execute($linkEntity);
+			$updateStatistic->execute( $linkEntity );
 			return $this->redirect( $linkEntity->getUrl()->value() );
 		} catch ( EntityNotFoundException $e ) {
 			throw $this->createNotFoundException( 'Link is not found or expired' );

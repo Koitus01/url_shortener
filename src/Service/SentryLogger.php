@@ -2,10 +2,12 @@
 
 namespace App\Service;
 
+use Throwable;
+
 class SentryLogger implements Interfaces\ExceptionLoggerInterface
 {
-	public function log(): void
+	public function log( Throwable $e ): void
 	{
-		// send to sentry code
+
 	}
 }

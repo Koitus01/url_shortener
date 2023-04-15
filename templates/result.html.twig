@@ -1,4 +1,8 @@
 {% extends 'base.html.twig' %}
 {% block body %}
+    <div class="base">
+        <span style="margin-bottom: 15px">Your short link: <a class="" href="{{ url }}">{{ url }}</a></span>
 
+        <a class="base__link" href="{{ path('app_link_index') }}">Or click here to create another URL</a>
+    </div>
 {% endblock %}
