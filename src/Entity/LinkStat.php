@@ -7,6 +7,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=LinkStatRepository::class)
+ * @ORM\Table(name="link_stat",indexes={
+ *     @ORM\Index(name="link_stat_visit_count_index", columns={"visit_count"}),
+ * })
  */
 class LinkStat
 {

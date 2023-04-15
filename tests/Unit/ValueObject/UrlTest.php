@@ -33,7 +33,20 @@ class UrlTest extends TestCase
 	{
 		$url = Url::fromString( ' https://aVaCaVaBaN.bb ' );
 
-		$this->assertEquals( $url->value(), 'https://avacavaban.bb');
+		$this->assertEquals( $url->value(), 'https://avacavaban.bb' );
+	}
+
+	public function testHost()
+	{
+		$url1 = Url::fromString( 'https://abcd.ru?saewewqsda' );
+		$url2 = Url::fromString( 'https://abcd.ru#ooooo' );
+		$url3 = Url::fromString( 'https://ффффффф.рф/iiiiiiiiiiikkkkkkkkkkkkk' );
+		$url4 = Url::fromString( 'ftp://185.1.2.3.4' );
+
+		$this->assertEquals('abcd.ru', $url1->host());
+		$this->assertEquals('abcd.ru', $url2->host());
+		$this->assertEquals('ффффффф.рф', $url3->host());
+		$this->assertEquals('185.1.2.3.4', $url4->host());
 	}
 
 	public function validUrl(): \Generator

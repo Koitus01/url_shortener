@@ -56,6 +56,7 @@ class CreateLink
 		$link = new Link();
 		$link->setHash( $hash );
 		$link->setUrl( $url );
+		$link->setHost( $url );
 		$linkStat = new LinkStat();
 		$linkStat->setVisitCount( 0 );
 		$link->setStat( $linkStat );

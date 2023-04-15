@@ -56,7 +56,9 @@ class CreateLinkTest extends KernelTestCase
 	{
 		$link = new Link();
 		$link->setHash( $this->hash() );
-		$link->setUrl( Url::fromString( 'https://bbbbbbb.co' ) );
+		$url = Url::fromString( 'https://bbbbbbb.co' );
+		$link->setUrl( $url );
+		$link->setHost( $url );
 		$link->setStat( new LinkStat() );
 		$this->doctrine->getManager()->persist( $link );
 		$this->doctrine->getManager()->flush();

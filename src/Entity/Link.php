@@ -9,6 +9,12 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=LinkRepository::class)
+ * @ORM\Table(name="link",indexes={
+ *     @ORM\Index(name="link_hash_index", columns={"hash"}),
+ *     @ORM\Index(name="link_created_at_index", columns={"created_at"}),
+ *     @ORM\Index(name="link_deleted_at_index", columns={"deleted_at"}),
+ *     @ORM\Index(name="link_host_index", columns={"host"}),
+ * })
  */
 class Link
 {
@@ -45,6 +51,11 @@ class Link
 	 */
 	private $deleted_at;
 
+	/**
+	 * @ORM\Column(type="string", length=255)
+	 */
+	private $host;
+
 	public function __construct()
 	{
 		$this->created_at = new DateTimeImmutable( 'now' );
@@ -57,7 +68,7 @@ class Link
 
 	public function getUrl(): Url
 	{
-		return Url::fromString($this->url, false);
+		return Url::fromString( $this->url, false );
 	}
 
 	public function setUrl( Url $url ): self
@@ -79,7 +90,7 @@ class Link
 		return $this;
 	}
 
-	public function getCreatedAt(): ?\DateTimeImmutable
+	public function getCreatedAt(): \DateTimeImmutable
 	{
 		return $this->created_at;
 	}
@@ -116,6 +127,18 @@ class Link
 	public function setDeletedAt( ?\DateTimeInterface $deleted_at ): self
 	{
 		$this->deleted_at = $deleted_at;
+
+		return $this;
+	}
+
+	public function getHost(): Url
+	{
+		return Url::fromString( $this->url, false );
+	}
+
+	public function setHost( Url $url ): self
+	{
+		$this->host = $url->host();
 
 		return $this;
 	}

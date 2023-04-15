@@ -9,10 +9,12 @@ class Url
 	private const MAX_LENGTH = 2000;
 
 	private string $url;
+	private string $host;
 
 	private function __construct( string $url )
 	{
 		$this->url = $url;
+		$this->host = parse_url( $this->url )['host'];
 	}
 
 	/**
@@ -78,5 +80,13 @@ class Url
 	public function __toString()
 	{
 		return $this->url;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function host(): string
+	{
+		return $this->host;
 	}
 }

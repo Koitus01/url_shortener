@@ -20,8 +20,10 @@ class LinkControllerTest extends WebTestCase
 			->getManager();
 		$link = new Link();
 		$link->setHash('bibibi');
-		$link->setUrl(Url::fromString('http://aaaaaaa.mo'));
+		$url = Url::fromString('http://aaaaaaa.mo');
+		$link->setUrl($url);
 		$link->setStat(new LinkStat());
+		$link->setHost($url);
 		$entityManager->persist($link);
 		$entityManager->flush();
 
@@ -39,7 +41,9 @@ class LinkControllerTest extends WebTestCase
 			->getManager();
 		$link = new Link();
 		$link->setHash('bibibi');
-		$link->setUrl(Url::fromString('http://aaaaaaa.mo'));
+		$url = Url::fromString('http://aaaaaaa.mo');
+		$link->setUrl($url);
+		$link->setHost($url);
 		$link->setStat(new LinkStat());
 		$link->setDeletedAt((new DateTime())->modify('-31 day'));
 		$entityManager->persist($link);
