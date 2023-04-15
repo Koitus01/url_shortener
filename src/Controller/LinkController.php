@@ -48,7 +48,7 @@ class LinkController extends AbstractController
 			// TODO: move url concatenation in a service, if needed somewhere else: CLI or Queue
 			// TODO: get the scheme from config???
 			return $this->render( 'result.html.twig', [
-				'url' => 'http://' . $this->getParameter('app.host') . '/' . $link->getHash()
+				'url' => 'http://' . $this->getParameter( 'app.host' ) . '/' . $link->getHash()
 			] );
 		} catch ( InvalidUrlException $e ) {
 			return $this->redirect( $this->generateUrl( 'app_link_index', [
@@ -56,8 +56,8 @@ class LinkController extends AbstractController
 				'url' => $request->get( 'url', $inputUrl )
 			] ) );
 		} catch ( UrlHashGenerateException $e ) {
-			$this->render( 'error.html.twig' );
 			$exceptionLogger->log( $e );
+			return $this->render( 'error.html.twig' );
 		}
 	}
 
