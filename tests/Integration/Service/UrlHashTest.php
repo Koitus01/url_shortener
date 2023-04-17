@@ -6,9 +6,9 @@ use App\Entity\Counter;
 use App\Exception\UrlHashGenerateException;
 use App\Repository\CounterRepository;
 use App\Service\UrlHash;
-use App\Tests\Integration\BaseIntegrationTest;
+use App\Tests\Integration\BaseIntegration;
 
-class UrlHashTest extends BaseIntegrationTest
+class UrlHashTest extends BaseIntegration
 {
 	protected CounterRepository $repository;
 

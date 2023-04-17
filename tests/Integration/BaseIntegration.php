@@ -5,7 +5,7 @@ namespace App\Tests\Integration;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class BaseIntegrationTest extends KernelTestCase
+abstract class BaseIntegration extends KernelTestCase
 {
 	/**
 	 * @var ManagerRegistry

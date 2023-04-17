@@ -4,10 +4,10 @@ namespace App\Tests\Integration\Repository;
 
 use App\Entity\Link;
 use App\Repository\LinkRepository;
-use App\Tests\Integration\BaseIntegrationTest;
+use App\Tests\Integration\BaseIntegration;
 use App\ValueObject\Url;
 
-class LinkRepositoryTest extends BaseIntegrationTest
+class LinkRepositoryTest extends BaseIntegration
 {
 
 	public function testDeleteExpired()

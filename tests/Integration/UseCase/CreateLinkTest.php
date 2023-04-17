@@ -4,11 +4,11 @@ namespace App\Tests\Integration\UseCase;
 
 use App\Entity\Counter;
 use App\Service\UrlHash;
-use App\Tests\Integration\BaseIntegrationTest;
+use App\Tests\Integration\BaseIntegration;
 use App\UseCase\CreateLink;
 use App\ValueObject\Url;
 
-class CreateLinkTest extends BaseIntegrationTest
+class CreateLinkTest extends BaseIntegration
 {
 	public function testExecute()
 	{

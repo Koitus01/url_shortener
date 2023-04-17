@@ -4,11 +4,11 @@ namespace App\Tests\Integration\UseCase;
 
 use App\Entity\Link;
 use App\Entity\LinkStat;
-use App\Tests\Integration\BaseIntegrationTest;
+use App\Tests\Integration\BaseIntegration;
 use App\UseCase\UpdateStatistic;
 use App\ValueObject\Url;
 
-class UpdateStatisticTest extends BaseIntegrationTest
+class UpdateStatisticTest extends BaseIntegration
 {
 	public function testExecute()
 	{
