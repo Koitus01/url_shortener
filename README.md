@@ -24,7 +24,7 @@
     # Если как плагин для docker'a:
     docker compose up -d
 
-Выполнить composer install, прогнать миграции для dev и testing баз:
+Выполнить composer install, прогнать миграции для dev и testing баз, используя bash-скрипт:
 
     # Есть таймаут в 10 секунд, поскольку контейнер с mysql может подниматься с задержкой
     chmod 755 ./docker/entrypoint.sh && ./docker/entrypoint.sh
