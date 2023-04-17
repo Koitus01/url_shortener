@@ -38,7 +38,7 @@ TODO:
 
 Сокращенные ссылки также можно создавать из консоли:
 
-    docker exec -it url_shortener_app ./bin/console app:create:link
+    docker exec -it url_shortener_app ./bin/console app:link:create
 
 Запуск тестов: 
 
