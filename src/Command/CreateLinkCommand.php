@@ -44,7 +44,7 @@ class CreateLinkCommand extends Command
 			return 0;
 		}
 
-		$shortUrl = $this->params->get( 'app.url' ) . '/' . $result->getHash();
+		$shortUrl = $this->params->get( 'app.url' ) . $result->getHash();
 		$io->success( 'Shor url: ' . $shortUrl );
 		return 0;
 	}
