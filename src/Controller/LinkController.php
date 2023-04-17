@@ -40,7 +40,6 @@ class LinkController extends AbstractController
 		ExceptionLoggerInterface $exceptionLogger
 	): Response
 	{
-		sleep(10);
 		$inputUrl = $request->get( 'url' );
 		try {
 			$url = Url::fromString( $inputUrl );
