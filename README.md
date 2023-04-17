@@ -1,10 +1,5 @@
 # url_shortener
 
-TODO: 
-1. крон для обновления updated_at
-2. аппликейшен тесты на роуты?
-3. 
-
 ## Requirements
 1. [Docker](https://docs.docker.com/get-docker/)
 2. [Docker compose](https://docs.docker.com/compose/install/)
@@ -47,7 +42,7 @@ TODO:
 
 
 ## Чистка
-Удаление ненужных контейнеров и volum'ов после тестов:
+Удаление ненужных контейнеров и volum'ов после:
 
     docker rm --force url_shortener_db url_shortener_webserver url_shortener_app && docker volume rm url_shortener_dbdata 
 
