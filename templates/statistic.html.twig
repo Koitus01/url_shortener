@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div style="max-width: fit-content" class="base">
+        <a class="base__link" href="{{ path('app_link_index') }}">Create URL</a>
+        <h1>URL statistics</h1>
+        <div class="pagination">
+            <span>Page: {{ page }}</span>
+            {% if page > 1 %}
+                <a href="{{ path('app_link_statistic', {'page': page - 1}) }}">Previous</a>
+            {% endif %}
+            {% if links|length > 0 %}
+                <a href="{{ path('app_link_statistic', {'page': page + 1}) }}">Next</a>
+            {% endif %}
+        </div>
+
+        {% if links|length > 0 %}
+            <table class="table">
+                <thead>
+                <tr>
+                    <th style="width: 25px">id</th>
+                    <th>Long URL</th>
+                    <th>Short URL</th>
+                    <th>Visit count</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                {% for link in links %}
+                    <tr class="table__row">
+                        <td>{{ link.id }}</td>
+                        <td><a href="{{ link.getUrl.viewValue }}"> {{ link.getUrl.viewValue }}</a></td>
+                        <td><a href="{{ app_url }}{{ link.getHash }}"> {{ app_url }}{{ link.getHash }} </a></td>
+                        <td style="margin-left: 15px">{{ link.stat.getVisitCount }}</td>
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+        {% else %}
+            <tr class="table__row">
+                <td>No data</td>
+                <td></td>
+                <td></td>
+
+            </tr>
+
+        {% endif %}
+    </div>
+
+    <style>
+        td, th {
+            padding: 0 15px;
+        }
+
+        tr {
+            text-align: left;
+        }
+
+        .table {
+            text-align: left;
+        }
+
+        .pagination {
+            align-self: start;
+            display: flex;
+            flex-direction: column;
+            min-height: 60px;
+            justify-content: space-around;
+            margin-bottom: 25px;
+        }
+
+        .table__row {
+            margin-bottom: 10px;
+        }
+    </style>
+{% endblock %}

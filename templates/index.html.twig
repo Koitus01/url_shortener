@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <form class="base url_form" action="{{ path('app_link_create') }}" method="POST">
+        <a class="base__link" href="{{ path('app_link_statistic') }}">Show statistic</a>
+        {% if error %}
+            <span class="url_form__error">URL is incorrect. Check for protocol</span>
+        {% endif %}
+        <h2>URL shortener</h2>
+        <input required name="url" class="url_form__input" value="{{ url ?? '' }}" type="text"
+               placeholder="https://aaaaaaaaa.com?name=cccc">
+        <button class="url_form__button">Short</button>
+    </form>
+
+    <style>
+
+        .url_form__input {
+            margin-bottom: 15px;
+            border: 0 solid transparent;
+            box-sizing: border-box;
+            color: #2f3747;
+            font-size: 16px;
+            outline: 0;
+            padding: 10px;
+            position: relative;
+            vertical-align: top;
+            width: 100%;
+            z-index: 2;
+        }
+
+        .url_form__error {
+            color: #fa0202;
+            padding: 1em 1.5em;
+            text-decoration: none;
+            text-transform: uppercase;
+        }
+
+        .url_form__button {
+            width: 120px;
+            height: 56px;
+            color: black;
+            background-color: coral;
+            cursor: pointer;
+            border: 1px;
+            border-radius: 25px;
+        }
+
+        .url_form__button:hover {
+            opacity: 0.7;
+        }
+    </style
+{% endblock %}

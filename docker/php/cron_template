@@ -1,0 +1,2 @@
+# Add delete expired links cronjob
+0 1 * * * /var/www/bin/console app:link:delete_expired >> /var/log/cron.log 2>&1

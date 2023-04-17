@@ -1,7 +1,13 @@
 # url_shortener
 
+TODO: 
+1. крон для обновления updated_at
+2. аппликейшен тесты на роуты?
+3. 
+
 ## Requirements
-1. Docker compose:
+1. [Docker](https://docs.docker.com/get-docker/)
+2. [Docker compose](https://docs.docker.com/compose/install/)
 
 ## Инструкция по развертыванию
 
@@ -13,23 +19,32 @@
 
     cd url_shortener
 
-Если docker compose установлен как «standalone package»:
+Запустить контейнеры: 
 
+    # Если docker compose установлен как «standalone package»:
     docker-compose up -d
 
-Если как плагин для docker'a:
-
+    # Если как плагин для docker'a:
     docker compose up -d
 
-«Прогон» миграций:
-    
+Прогнать миграции для dev и testing баз:
+
+    # Есть таймаут в 10 секунд, поскольку контейнер с mysql может подниматься с задержкой
     chmod 755 ./docker/entrypoint.sh && ./docker/entrypoint.sh
 
-Веб интерфейс теперь доступен по адресу: http://localhost:8080
+## Использование
 
-Консольное создание сокращенной ссылки:
+После развертывания веб интерфейс должен быть доступен по адресу: http://localhost:8080
 
-    docker exec -it url_shortener_app ./bin/console app:create:link
+Сокращенные ссылки также можно создавать из консоли:
+
+    docker exec -it url_shortener_app ./bin/console app:link:create
+
+Запуск тестов: 
+
+    docker exec -it url_shortener_app php bin/phpunit
+
+
 
 ## Чистка
 Удаление ненужных контейнеров и volum'ов после тестов:
