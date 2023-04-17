@@ -46,7 +46,6 @@ RUN pecl install xdebug-3.1.5 \
     && docker-php-ext-enable xdebug
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-RUN composer install
 
 # Add www user
 RUN groupadd -g 1000 www
@@ -66,6 +65,7 @@ COPY --chown=www:www . /var/www
 
 # Change current user to www
 USER www
+RUN composer install
 
 # Expose port 9000 and start php-fpm server
 EXPOSE 9000
