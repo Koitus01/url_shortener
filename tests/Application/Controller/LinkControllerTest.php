@@ -79,9 +79,9 @@ class LinkControllerTest extends WebTestCase
 
 		$this->client->request( 'GET', '/bibibi' );
 		$this->entityManager->clear();
-		$updatedEntity = $this->entityManager->getRepository(Link::class)->find($link->getId());
+		$updatedEntity = $this->entityManager->getRepository( Link::class )->find( $link->getId() );
 
 		$this->assertResponseRedirects( 'http://aaaaaaa.mo' );
-		$this->assertEquals(1, $updatedEntity->getStat()->getVisitCount());
+		$this->assertEquals( 1, $updatedEntity->getStat()->getVisitCount() );
 	}
 }

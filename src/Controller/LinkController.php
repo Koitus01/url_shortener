@@ -73,7 +73,7 @@ class LinkController extends AbstractController
 			[],
 			[],
 			$limit,
-			$page * $limit - 10
+			$page * $limit - $limit
 		);
 
 		return $this->render( 'statistic.html.twig', [
