@@ -66,6 +66,19 @@ class LinkRepository extends ServiceEntityRepository
 		}
 	}
 
+	public function deleteExpired()
+	{
+		$query = $this->getEntityManager()
+			->createQueryBuilder( 'l' )
+			->update( 'App\Entity\Link', 'l' )
+			->set( 'l.deleted_at', ':now' )
+			->where( 'l.created_at < :expired' )
+			->setParameter( 'expired', new DateTime( '-30 days' ) )
+			->setParameter( 'now', new DateTime() );
+
+		return $query->getQuery()->execute();
+	}
+
 //    /**
 //     * @return Link[] Returns an array of Link objects
 //     */

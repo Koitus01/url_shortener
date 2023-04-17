@@ -2,6 +2,8 @@ FROM php:7.4-fpm
 
 # Copy composer.lock and composer.json
 COPY composer.lock composer.json /var/www/
+# Copy cron_template
+COPY ./docker/php/cron_template /etc/cron.d/
 
 # Set working directory
 WORKDIR /var/www
@@ -23,7 +25,8 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     zlib1g-dev \
     g++ \
-    libicu-dev
+    libicu-dev \
+    cron
 
 
 # Clear cache
@@ -47,6 +50,12 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 # Add www user
 RUN groupadd -g 1000 www
 RUN useradd -u 1000 -ms /bin/bash -g www www
+
+# Cron
+RUN chmod 0644 /etc/cron.d/cron_template
+RUN crontab /etc/cron.d/cron_template
+RUN touch /var/log/cron.log
+CMD cron
 
 # Copy existing application directory contents
 COPY . /var/www
