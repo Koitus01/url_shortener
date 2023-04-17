@@ -1,6 +1,7 @@
 # url_shortener
 
 ## Requirements
+
 1. [Docker](https://docs.docker.com/get-docker/)
 2. [Docker compose](https://docs.docker.com/compose/install/)
 
@@ -16,7 +17,7 @@
 
     cd url_shortener
 
-Запустить контейнеры: 
+Запустить контейнеры:
 
     # Если docker compose установлен как «standalone package»:
     docker-compose up -d
@@ -37,14 +38,13 @@
 
     docker exec -it url_shortener_app ./bin/console app:link:create
 
-Запуск тестов: 
+Запуск тестов:
 
     docker exec -it url_shortener_app php bin/phpunit
 
-
-
 ## Чистка
-Удаление ненужных контейнеров и volum'ов после:
+
+Удаление ненужных контейнеров и volum'ов:
 
     docker rm --force url_shortener_db url_shortener_webserver url_shortener_app && docker volume rm url_shortener_dbdata 
 
