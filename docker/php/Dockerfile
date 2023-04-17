@@ -46,6 +46,7 @@ RUN pecl install xdebug-3.1.5 \
     && docker-php-ext-enable xdebug
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+RUN composer install
 
 # Add www user
 RUN groupadd -g 1000 www
