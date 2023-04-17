@@ -13,9 +13,6 @@ class UrlHash implements UrlHashInterface
 {
 	private ManagerRegistry $doctrine;
 
-	private const MAX_LENGTH = 6;
-	private string $hash;
-
 	const ALPHABET = '0123456789abcdefghjkmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ';
 	const BASE = 59; // strlen(self::ALPHABET)
 
@@ -42,7 +39,7 @@ class UrlHash implements UrlHashInterface
 		return new Hash( $this->encode( $int ) );
 	}
 
-	private function encode( $num ): string
+	private function encode( int $num ): string
 	{
 		$str = '';
 

@@ -6,6 +6,7 @@ use App\Exception\UrlHashGenerateException;
 
 class Hash
 {
+	private const MAX_LENGTH = 6;
 	private string $hash;
 
 	/**
@@ -17,7 +18,7 @@ class Hash
 			throw new UrlHashGenerateException( 'Hash is empty' );
 		}
 
-		if ( strlen( $hash ) > 6 ) {
+		if ( strlen( $hash ) > self::MAX_LENGTH ) {
 			throw new UrlHashGenerateException( 'Hash is become too long' );
 		}
 
