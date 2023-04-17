@@ -3,13 +3,13 @@
 namespace App\Service\Interfaces;
 
 use App\Exception\UrlHashGenerateException;
-use App\Service\UrlHash;
-use App\ValueObject\Url;
+use App\ValueObject\Hash;
 
 interface UrlHashInterface
 {
-	public function value(): string;
-
-	public function generate( Url $url ): UrlHash;
+	/**
+	 * @throws UrlHashGenerateException
+	 */
+	public function generate(): Hash;
 
 }

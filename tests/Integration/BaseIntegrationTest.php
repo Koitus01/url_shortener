@@ -22,7 +22,7 @@ class BaseIntegrationTest extends KernelTestCase
 
 	protected static function hash(): string
 	{
-		return 'e0a7a0';
+		return '1';
 	}
 
 	protected static function url(): string

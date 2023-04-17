@@ -47,11 +47,7 @@ class CreateLink
 			return $model;
 		}
 
-		$hash = $this->urlHash->generate( $url )->value();
-		// Extremely rare collisions are possible, so generating new hash, if it already exists
-		while ( $repository->findOneBy( ['hash' => $hash] ) ) {
-			$hash = $this->urlHash->next()->value();
-		}
+		$hash = $this->urlHash->generate()->value();
 
 		$link = new Link();
 		$link->setHash( $hash );

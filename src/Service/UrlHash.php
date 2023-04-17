@@ -2,56 +2,55 @@
 
 namespace App\Service;
 
+use App\Entity\Counter;
 use App\Exception\UrlHashGenerateException;
+use App\Repository\CounterRepository;
 use App\Service\Interfaces\UrlHashInterface;
-use App\ValueObject\Url;
+use App\ValueObject\Hash;
+use Doctrine\Persistence\ManagerRegistry;
 
 class UrlHash implements UrlHashInterface
 {
+	private ManagerRegistry $doctrine;
+
 	private const MAX_LENGTH = 6;
 	private string $hash;
-	private string $fullHash;
-	private int $skipped_char = 0;
 
-	public function value(): string
+	const ALPHABET = '0123456789abcdefghjkmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ';
+	const BASE = 59; // strlen(self::ALPHABET)
+
+	public function __construct( ManagerRegistry $doctrine )
 	{
-		return $this->hash;
+		$this->doctrine = $doctrine;
 	}
 
 	/**
-	 * TODO: probably pass Url value object here is not the best idea, because generate hash might not be needed it
-	 * @param Url $url
-	 * @return UrlHash
+	 * No need locks, because this action is not in transaction
+	 * @return Hash
 	 * @throws UrlHashGenerateException
 	 */
-	public function generate( Url $url ): UrlHash
+	public function generate(): Hash
 	{
-		if (isset($this->hash)) {
-			throw new UrlHashGenerateException( 'Hash already generated' );
-		}
+		/** @var CounterRepository $repository */
+		$repository = $this->doctrine->getRepository( Counter::class );
+		$counter = $repository->getCounter();
+		$int = $counter->getValue();
+		$counter->setValue( $int + 1 );
+		$this->doctrine->getManager()->persist( $counter );
+		$this->doctrine->getManager()->flush();
 
-		$this->fullHash = hash( 'md5', $url );
-		$this->hash = substr( $this->fullHash, 0, self::MAX_LENGTH );
-
-		return $this;
+		return new Hash( $this->encode( $int ) );
 	}
 
-	/**
-	 * @throws UrlHashGenerateException
-	 */
-	public function next(): UrlHash
+	private function encode( $num ): string
 	{
-		if (!isset($this->hash)) {
-			throw new UrlHashGenerateException( 'First generate hash' );
+		$str = '';
+
+		while ( $num > 0 ) {
+			$str = self::ALPHABET[( $num % self::BASE )] . $str;
+			$num = (int)( $num / self::BASE );
 		}
 
-		$this->skipped_char++;
-		$this->hash = substr( $this->fullHash, $this->skipped_char, self::MAX_LENGTH );
-		if ( !$this->hash ) {
-			// unlikely case, better to know about it
-			throw new UrlHashGenerateException( 'Cannot generate unique hash for an url' );
-		}
-
-		return $this;
+		return $str;
 	}
 }
