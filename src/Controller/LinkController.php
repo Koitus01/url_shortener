@@ -13,7 +13,6 @@ use App\ValueObject\Url;
 use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -41,12 +40,11 @@ class LinkController extends AbstractController
 		ExceptionLoggerInterface $exceptionLogger
 	): Response
 	{
+		sleep(10);
 		$inputUrl = $request->get( 'url' );
 		try {
 			$url = Url::fromString( $inputUrl );
 			$link = $createLink->execute( $url );
-			// TODO: move url concatenation in a service, if needed somewhere else: CLI or Queue
-			// Get the scheme from config???
 			return $this->render( 'result.html.twig', [
 				'app_url' => $this->getParameter( 'app.url' ),
 				'hash' => $link->getHash()
